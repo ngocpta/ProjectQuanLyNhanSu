@@ -2,6 +2,6 @@
 {
     public class RewardReq
     {
-        
+        public string Id { get; set; }
     }
 }

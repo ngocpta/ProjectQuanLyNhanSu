@@ -2,6 +2,6 @@
 {
     public class DisciplineReq
     {
-        
+        public string Id { get; set; }
     }
 }

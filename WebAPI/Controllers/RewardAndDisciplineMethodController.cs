@@ -100,11 +100,11 @@ namespace WebAPI.Controllers
                 RewardAndDisciplineMethod method = new RewardAndDisciplineMethod();
                 try
                 {
-                    var checkCode = _context.ContractType.Any(m => m.Id == req.value.Id);
+                    var checkCode = _context.RewardAndDisciplineMethod.Any(m => m.Id == req.value.Id);
                     if (checkCode)
                         throw new MethodAlreadyExistException();
 
-                    method.Id = "KT-KL" + Convert.ToString(DateTime.Today.Day) +
+                    method.Id = "KTKL" + Convert.ToString(DateTime.Today.Day) +
                                     Convert.ToString(DateTime.Today.Month) + Convert.ToString(DateTime.Today.Year) +
                                     req.value.Id;
                     method.Name = req.value.Name;
@@ -120,7 +120,7 @@ namespace WebAPI.Controllers
                 {
                 }
 
-                return HandleSuccess(res.Value = "SUCCESS CREATED DEPARTMENT!");
+                return HandleSuccess(res.Value = "SUCCESS CREATED!");
             }
             catch (MethodAlreadyExistException e)
             {
@@ -177,7 +177,7 @@ namespace WebAPI.Controllers
 
             catch (MethodNotFoundException e)
             {
-                res.Status = ContractStatus.ContractTypeNotFound;
+                res.Status = RewardAndDisciplineStatus.RewardAndDisciplineMethodNotFound;
                 res.Value = e.Message;
             }
             return Ok(res);

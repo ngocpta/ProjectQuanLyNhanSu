@@ -107,25 +107,32 @@ namespace WebAPI.Controllers
             Res res = new Res();
             try
             {
-                var contract = _context.Contracts.FirstOrDefault(p => p.ContractTypeId == req.value.Id);
-                if (contract == null)
+                var contracts = _context.Contracts.Where(p => p.ContractTypeId == req.value.Id);
+                if (contracts == null)
                     throw new ContractNotFoundException();
-                var co = new ContractRes();
-                try
+                var list = new List<ContractRes>();
+                foreach (var contract in contracts)
                 {
-                    co.Id = contract.Id;
-                    co.Active = contract.Active;
-                    co.Name = contract.Name;
-                    co.Time = contract.Time;
-                    co.Note = contract.Note;
-                    co.ContractTypeId = contract.ContractTypeId;
-                    co.ContractTypeName = _context.ContractType.FirstOrDefault(x => x.Id == co.ContractTypeId) == null
-                        ? string.Empty
-                        : _context.ContractType.FirstOrDefault(x => x.Id == co.ContractTypeId).Name;
-                }
-                catch (Exception e) { }
+                    var co = new ContractRes();
+                    try
+                    {
+                        co.Id = contract.Id;
+                        co.Active = contract.Active;
+                        co.Name = contract.Name;
+                        co.Time = contract.Time;
+                        co.Note = contract.Note;
+                        co.ContractTypeId = contract.ContractTypeId;
+                        co.ContractTypeName = _context.ContractType.FirstOrDefault(x => x.Id == co.ContractTypeId) == null
+                            ? string.Empty
+                            : _context.ContractType.FirstOrDefault(x => x.Id == co.ContractTypeId).Name;
 
-                return HandleSuccess(co);
+                        list.Add(co);
+                    }
+                    
+                    catch (Exception e) { }
+                }
+                
+                return HandleSuccess(list);
             }
             catch (ContractNotFoundException e)
             {
