@@ -184,6 +184,8 @@ namespace WebAPI.Controllers
                     reward.DicisionNo = req.value.DicisionNo;
                     reward.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
                     reward.PercentReward = req.value.PercentReward;
+                    if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
+                        throw new MethodNotFoundException();
                     reward.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
                     reward.SignBy = req.value.SignBy;
                     reward.SignDate = Convert.ToDateTime(req.value.SignDate);
@@ -205,6 +207,11 @@ namespace WebAPI.Controllers
                 res.Status = RewardAndDisciplineStatus.RewardAlreadyExist;
                 res.Value = e.Message;
             }
+            catch (MethodNotFoundException e)
+            {
+                res.Status = RewardAndDisciplineStatus.RewardAndDisciplineMethodNotFound;
+                res.Value = e.Message;
+            }
 
             return Ok(res);
         }
@@ -223,6 +230,8 @@ namespace WebAPI.Controllers
                 reward.DicisionNo = req.value.DicisionNo;
                 reward.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
                 reward.PercentReward = req.value.PercentReward;
+                if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
+                    throw new MethodNotFoundException();
                 reward.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
                 reward.Amount = req.value.Amount;
                 reward.Title = req.value.Title;
@@ -238,6 +247,11 @@ namespace WebAPI.Controllers
             catch (RewardNotFoundException e)
             {
                 res.Status = RewardAndDisciplineStatus.RewardNotFound;
+                res.Value = e.Message;
+            }
+            catch (MethodNotFoundException e)
+            {
+                res.Status = RewardAndDisciplineStatus.RewardAndDisciplineMethodNotFound;
                 res.Value = e.Message;
             }
             return Ok(res);

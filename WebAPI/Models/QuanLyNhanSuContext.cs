@@ -72,7 +72,7 @@ namespace WebAPI.Models
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.EffectiveDate).HasColumnType("date");
+                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Name).HasMaxLength(250);
 
@@ -120,7 +120,7 @@ namespace WebAPI.Models
 
                 entity.Property(e => e.Name).HasMaxLength(255);
 
-                entity.Property(e => e.Note).HasColumnType("text");
+                entity.Property(e => e.Note).HasMaxLength(255);
 
                 entity.Property(e => e.UpdatedBy)
                     .HasMaxLength(50)
@@ -162,7 +162,7 @@ namespace WebAPI.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.EffectiveDate).HasColumnType("date");
+                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.RewardAndDisciplineMethodId).HasColumnName("RewardAndDisciplineMethodID");
 
@@ -211,14 +211,12 @@ namespace WebAPI.Models
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
                     .ValueGeneratedNever();
-
-                entity.Property(e => e.Avatar).HasColumnType("image");
-
-                entity.Property(e => e.Birthday).HasColumnType("date");
+                
+                entity.Property(e => e.Birthday).HasColumnType("datetime");
 
                 entity.Property(e => e.CurrentAddress).HasMaxLength(50);
 
-                entity.Property(e => e.DayInCompany).HasColumnType("date");
+                entity.Property(e => e.DayInCompany).HasColumnType("datetime");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
@@ -229,7 +227,7 @@ namespace WebAPI.Models
 
                 entity.Property(e => e.Fullname).HasMaxLength(100);
 
-                entity.Property(e => e.PayrollDay).HasColumnType("date");
+                entity.Property(e => e.PayrollDay).HasColumnType("datetime");
 
                 entity.Property(e => e.PositionId).HasColumnName("PositionID");
 
@@ -270,13 +268,13 @@ namespace WebAPI.Models
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
-                entity.Property(e => e.EndDate).HasColumnType("date");
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Note).HasMaxLength(255);
 
-                entity.Property(e => e.SigningDate).HasColumnType("date");
+                entity.Property(e => e.SigningDate).HasColumnType("datetime");
 
-                entity.Property(e => e.StartDate).HasColumnType("date");
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Contract)
                     .WithMany(p => p.EmployeeContract)
@@ -545,7 +543,7 @@ namespace WebAPI.Models
                     .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Birthday).HasColumnType("date");
+                entity.Property(e => e.Birthday).HasColumnType("datetime");
 
                 entity.Property(e => e.Career).HasMaxLength(255);
 
@@ -581,7 +579,7 @@ namespace WebAPI.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.EffectiveDate).HasColumnType("date");
+                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
 
                 entity.Property(e => e.RewardAndDisciplineMethodId).HasColumnName("RewardAndDisciplineMethodID");
 
@@ -667,7 +665,7 @@ namespace WebAPI.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Date).HasColumnType("date");
+                entity.Property(e => e.Date).HasColumnType("datetime");
 
                 entity.Property(e => e.EmployeeId)
                     .HasMaxLength(50)
@@ -703,7 +701,7 @@ namespace WebAPI.Models
                     .IsUnicode(false)
                     .HasColumnName("EmployeeID");
 
-                entity.Property(e => e.Month).HasColumnType("date");
+                entity.Property(e => e.Month).HasColumnType("datetime");
 
                 entity.Property(e => e.TotalExtraTimeWork).HasColumnType("decimal(18, 0)");
             });
@@ -746,9 +744,9 @@ namespace WebAPI.Models
                     .IsUnicode(false)
                     .HasColumnName("EmployeeID");
 
-                entity.Property(e => e.EndWork).HasColumnType("date");
+                entity.Property(e => e.EndWork).HasColumnType("datetime");
 
-                entity.Property(e => e.StartWork).HasColumnType("date");
+                entity.Property(e => e.StartWork).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.WorkProcess)

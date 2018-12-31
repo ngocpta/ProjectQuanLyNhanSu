@@ -183,6 +183,8 @@ namespace WebAPI.Controllers
                     discipline.DicisionNo = req.value.DicisionNo;
                     discipline.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
                     discipline.PercentDiscipline = req.value.PercentDiscipline;
+                    if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
+                        throw new MethodNotFoundException();
                     discipline.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
                     discipline.SignBy = req.value.SignBy;
                     discipline.SignDate = Convert.ToDateTime(req.value.SignDate);
@@ -204,6 +206,11 @@ namespace WebAPI.Controllers
                 res.Status = RewardAndDisciplineStatus.DisciplineAlreadyExist;
                 res.Value = e.Message;
             }
+            catch (MethodNotFoundException e)
+            {
+                res.Status = RewardAndDisciplineStatus.RewardAndDisciplineMethodNotFound;
+                res.Value = e.Message;
+            }
 
             return Ok(res);
         }
@@ -222,6 +229,8 @@ namespace WebAPI.Controllers
                 discipline.DicisionNo = req.value.DicisionNo;
                 discipline.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
                 discipline.PercentDiscipline = req.value.PercentDiscipline;
+                if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
+                    throw new MethodNotFoundException();
                 discipline.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
                 discipline.Amount = req.value.Amount;
                 discipline.Title = req.value.Title;
@@ -237,6 +246,11 @@ namespace WebAPI.Controllers
             catch (DisciplineNotFoundException e)
             {
                 res.Status = RewardAndDisciplineStatus.DisciplineNotFound;
+                res.Value = e.Message;
+            }
+            catch (MethodNotFoundException e)
+            {
+                res.Status = RewardAndDisciplineStatus.RewardAndDisciplineMethodNotFound;
                 res.Value = e.Message;
             }
             return Ok(res);

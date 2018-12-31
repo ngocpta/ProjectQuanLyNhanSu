@@ -164,9 +164,9 @@ namespace WebAPI.Controllers
                     contract.Note = req.value.Note;
                     contract.Time = req.value.Time;
 
-                    if (_context.ContractType.FirstOrDefault(x => x.Id == req.value.ContractTypeId)==null)
+                    if (_context.ContractType.FirstOrDefault(x => x.Id == req.value.ContractTypeId) == null)
                         throw new ContractTypeNotFoundException();
-                    if(_context.ContractType.FirstOrDefault(x=>x.Id==req.value.ContractTypeId).Active==false)
+                    if (_context.ContractType.FirstOrDefault(x => x.Id == req.value.ContractTypeId).Active == false)
                         throw new ContractTypeDisableException();
                     contract.ContractTypeId = req.value.ContractTypeId;
                     
@@ -182,6 +182,16 @@ namespace WebAPI.Controllers
             catch (ContractAlreadyExistException e)
             {
                 res.Status = ContractStatus.ContractAlreadyExist;
+                res.Value = e.Message;
+            }
+            catch (ContractTypeNotFoundException e)
+            {
+                res.Status = ContractStatus.ContractTypeNotFound;
+                res.Value = e.Message;
+            }
+            catch (ContractTypeDisableException e)
+            {
+                res.Status = ContractStatus.ContractTypeDisable;
                 res.Value = e.Message;
             }
 

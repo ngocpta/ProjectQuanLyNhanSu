@@ -25,10 +25,9 @@ namespace WebAPI.Models
         public int? WardId { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public byte[] Avatar { get; set; }
         public int? EducationLevel { get; set; }
         public string SpecializeId { get; set; }
-        public string LanguageLevel { get; set; }
+        public int? LanguageLevel { get; set; }
         public string DepartmentId { get; set; }
         public string PositionId { get; set; }
         public DateTime? PayrollDay { get; set; }

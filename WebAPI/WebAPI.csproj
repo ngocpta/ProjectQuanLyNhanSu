@@ -3,10 +3,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="ExceptionModel\EmployeeException\" />
     <Folder Include="ExceptionModel\InsuranceException\" />
     <Folder Include="Helpers\" />
     <Folder Include="Model\Common\" />
+    <Folder Include="Avatar\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
