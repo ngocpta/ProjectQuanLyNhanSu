@@ -21,6 +21,7 @@ namespace WebAPI.Models
         public double? NoLeaveWithPermission { get; set; }
         public double? NoLeaveWithoutPermission { get; set; }
         public double? NoLate { get; set; }
+        public double? NoGetVacation { get; set; }
         public double? NoWorkStandard { get; set; }
         public double? NoWork { get; set; }
         public decimal? SalaryPerDay { get; set; }

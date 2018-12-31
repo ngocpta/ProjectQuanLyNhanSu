@@ -6,6 +6,7 @@
     <Folder Include="ExceptionModel\InsuranceException\" />
     <Folder Include="Helpers\" />
     <Folder Include="Model\Common\" />
+    <Folder Include="Model\Salary\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

@@ -245,13 +245,91 @@ namespace WebAPI.Controllers
             {
                 if (_context.Employee.FirstOrDefault(x => x.Id == req.value.EmployeeId) == null)
                     throw new EmployeeNotFoundException();
-                var timeMonth=new TimeKeepingMonthRes();
+                var checkAny = _context.TimeKeeping.Any(x =>
+                    x.EmployeeId == req.value.EmployeeId && x.Date.Month == req.value.Month &&
+                    x.Date.Year == req.value.Year);
+                if(!checkAny) throw new TimeKeepingNotFoundException();
+                var months = _context.TimeKeeping.Where(x =>
+                    x.EmployeeId == req.value.EmployeeId && x.Date.Month == req.value.Month &&
+                    x.Date.Year == req.value.Year);
+
+                var timeMonthRes = new TimeKeepingMonthRes();
                 
+                var salary = new Salary();
+                try
+                {
+                    salary.EmployeeId = req.value.EmployeeId;
+                    salary.Month = req.value.Month;
+                    salary.Year = req.value.Year;
+
+                    timeMonthRes.EmployeeId = req.value.EmployeeId;
+                    timeMonthRes.Month = req.value.Month;
+                    timeMonthRes.Year = req.value.Year;
+
+                    timeMonthRes.NoLate =Convert.ToDouble(months.Where(x => x.IsLate == true).Count());
+                    salary.NoLate = timeMonthRes.NoLate;
+
+                    timeMonthRes.NoGetVacation = Convert.ToDouble(months.Where(x =>
+                        x.IsGetVacation == true && x.IsLeaveWithoutPermission == false &&
+                        x.IsLeaveWithPermission == false && x.IsLate == false).Count());
+                    salary.NoGetVacation = timeMonthRes.NoGetVacation;
+
+                    timeMonthRes.NoLeaveWithPermission = Convert.ToDouble(months.Where(x =>
+                        x.IsLeaveWithPermission == true && x.IsLeaveWithoutPermission == false &&
+                        x.IsGetVacation == false && x.IsLate == false).Count());
+                    salary.NoLeaveWithPermission = timeMonthRes.NoLeaveWithPermission;
+
+                    timeMonthRes.NoLeaveWithoutPermission = Convert.ToDouble(months.Where(x =>
+                        x.IsLeaveWithPermission == false && x.IsLeaveWithoutPermission == true && x.IsLate == false &&
+                        x.IsGetVacation == false).Count());
+                    salary.NoLeaveWithoutPermission = timeMonthRes.NoLeaveWithoutPermission;
+
+                    timeMonthRes.NoWork = Convert.ToDouble(months.Sum(x => x.NoWork));
+                    salary.NoWork = timeMonthRes.NoWork;
+
+                    timeMonthRes.TimeKeepingDay = months.Select(t => new TimeKeepingDayRes
+                    {
+                        EmployeeId = t.EmployeeId,
+                        EmployeeName =
+                            _context.Employee.FirstOrDefault(x => x.Id == t.EmployeeId).Fullname == null
+                                ? string.Empty
+                                : _context.Employee.FirstOrDefault(x => x.Id == t.EmployeeId).Fullname,
+                        NoWork = t.NoWork,
+                        IsLeaveWithoutPermission = t.IsLeaveWithoutPermission,
+                        IsLeaveWithPermission = t.IsLeaveWithPermission,
+                        IsGetVacation = t.IsGetVacation,
+                        IsLate = t.IsLate,
+                        Date = t.Date.ToShortDateString(),
+                        ExtractTimeWork = t.ExtractTimeWork,
+                        NoTimeWork = t.NoTimeWork,
+                        Note = t.Note,
+                        TimeIn = t.TimeIn.ToString(),
+                        TimeOut = t.TimeOut.ToString(),
+                        UpdatedBy = t.UpdatedBy,
+                        UpdatedDate = t.UpdatedDate.ToString()
+                    }).ToList();
+
+                    _context.Salary.Add(salary);
+                    _context.SaveChanges();
+
+                    return HandleSuccess(timeMonthRes);
+                }
+                
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
-            catch (Exception e)
+            catch (EmployeeNotFoundException e)
             {
-                Console.WriteLine(e);
-                throw;
+                res.Status = EmployeeStatus.EmployeeNotFound;
+                res.Value = e.Message;
+            }
+            catch (TimeKeepingNotFoundException e)
+            {
+                res.Status = TimeKeepingStatus.TimeKeepingNotFound;
+                res.Value = e.Message;
             }
             return Ok(res);
         }
