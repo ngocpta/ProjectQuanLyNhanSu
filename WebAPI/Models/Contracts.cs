@@ -16,6 +16,7 @@ namespace WebAPI.Models
         public string ContractTypeId { get; set; }
         public int? Time { get; set; }
         public bool? Active { get; set; }
+        public decimal? SalaryFactor { get; set; }
 
         public ContractType ContractType { get; set; }
         public ICollection<EmployeeContract> EmployeeContract { get; set; }

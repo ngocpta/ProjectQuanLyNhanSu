@@ -276,15 +276,15 @@ namespace WebAPI.Controllers
 
                     employee.Id = "NV" + req.value.DepartmentId + req.value.Id;
                     employee.Active = req.value.Active;
-                    if (req.value.DepartmentId==null)
+                    if (_context.Department.FirstOrDefault(x => x.Id == req.value.DepartmentId) == null)
                         throw new DepartmentNotFoundException();
                     employee.DepartmentId = req.value.DepartmentId;
                     employee.PayrollDay = Convert.ToDateTime(req.value.PayrollDay);
                     employee.Phone = req.value.Phone;
-                    if (req.value.PositionId == null)
+                    if (_context.Position.FirstOrDefault(x => x.Id == req.value.PositionId) == null)
                         throw new PositionNotFoundException();
                     employee.PositionId = req.value.PositionId;
-                    if (req.value.DepartmentId == null)
+                    if (_context.Specialize.FirstOrDefault(x=>x.Id==req.value.SpecializeId)==null)
                         throw new SpecializeNotFoundException();
                     employee.SpecializeId = req.value.SpecializeId;
                     employee.WardId = req.value.WardId;
@@ -346,15 +346,15 @@ namespace WebAPI.Controllers
                 try
                 {
                     employee.Active = req.value.Active;
-                    if (req.value.DepartmentId == null)
+                    if (_context.Department.FirstOrDefault(x => x.Id == req.value.DepartmentId) == null)
                         throw new DepartmentNotFoundException();
                     employee.DepartmentId = req.value.DepartmentId;
                     employee.PayrollDay = Convert.ToDateTime(req.value.PayrollDay);
                     employee.Phone = req.value.Phone;
-                    if (req.value.PositionId == null)
+                    if (_context.Position.FirstOrDefault(x => x.Id == req.value.PositionId) == null)
                         throw new PositionNotFoundException();
                     employee.PositionId = req.value.PositionId;
-                    if (req.value.DepartmentId == null)
+                    if (_context.Specialize.FirstOrDefault(x => x.Id == req.value.SpecializeId) == null)
                         throw new SpecializeNotFoundException();
                     employee.SpecializeId = req.value.SpecializeId;
                     employee.WardId = req.value.WardId;

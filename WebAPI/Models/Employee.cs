@@ -11,9 +11,7 @@ namespace WebAPI.Models
             EmployeeDiscipline = new HashSet<EmployeeDiscipline>();
             EmployeeInsurrance = new HashSet<EmployeeInsurrance>();
             EmployeeReward = new HashSet<EmployeeReward>();
-            EmployeeSalaryLevel = new HashSet<EmployeeSalaryLevel>();
             Relatives = new HashSet<Relatives>();
-            TimeKeeping = new HashSet<TimeKeeping>();
             WorkProcess = new HashSet<WorkProcess>();
         }
 
@@ -42,9 +40,7 @@ namespace WebAPI.Models
         public ICollection<EmployeeDiscipline> EmployeeDiscipline { get; set; }
         public ICollection<EmployeeInsurrance> EmployeeInsurrance { get; set; }
         public ICollection<EmployeeReward> EmployeeReward { get; set; }
-        public ICollection<EmployeeSalaryLevel> EmployeeSalaryLevel { get; set; }
         public ICollection<Relatives> Relatives { get; set; }
-        public ICollection<TimeKeeping> TimeKeeping { get; set; }
         public ICollection<WorkProcess> WorkProcess { get; set; }
     }
 }

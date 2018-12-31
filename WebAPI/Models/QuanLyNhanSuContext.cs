@@ -20,6 +20,7 @@ namespace WebAPI.Models
         }
 
         public virtual DbSet<Allowance> Allowance { get; set; }
+        public virtual DbSet<ConfigureTimeWork> ConfigureTimeWork { get; set; }
         public virtual DbSet<Contracts> Contracts { get; set; }
         public virtual DbSet<ContractType> ContractType { get; set; }
         public virtual DbSet<Department> Department { get; set; }
@@ -30,7 +31,6 @@ namespace WebAPI.Models
         public virtual DbSet<EmployeeDiscipline> EmployeeDiscipline { get; set; }
         public virtual DbSet<EmployeeInsurrance> EmployeeInsurrance { get; set; }
         public virtual DbSet<EmployeeReward> EmployeeReward { get; set; }
-        public virtual DbSet<EmployeeSalaryLevel> EmployeeSalaryLevel { get; set; }
         public virtual DbSet<Insurrance> Insurrance { get; set; }
         public virtual DbSet<Member> Member { get; set; }
         public virtual DbSet<PersonalTaxRate> PersonalTaxRate { get; set; }
@@ -39,10 +39,9 @@ namespace WebAPI.Models
         public virtual DbSet<Relatives> Relatives { get; set; }
         public virtual DbSet<Reward> Reward { get; set; }
         public virtual DbSet<RewardAndDisciplineMethod> RewardAndDisciplineMethod { get; set; }
-        public virtual DbSet<SalaryLevel> SalaryLevel { get; set; }
+        public virtual DbSet<Salary> Salary { get; set; }
         public virtual DbSet<Specialize> Specialize { get; set; }
         public virtual DbSet<TimeKeeping> TimeKeeping { get; set; }
-        public virtual DbSet<TimeWork> TimeWork { get; set; }
         public virtual DbSet<Ward> Ward { get; set; }
         public virtual DbSet<WorkProcess> WorkProcess { get; set; }
 
@@ -83,6 +82,14 @@ namespace WebAPI.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<ConfigureTimeWork>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
             });
 
             modelBuilder.Entity<Contracts>(entity =>
@@ -382,41 +389,7 @@ namespace WebAPI.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EmployeeReward_Reward");
             });
-
-            modelBuilder.Entity<EmployeeSalaryLevel>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.SalaryLevelId).HasColumnName("SalaryLevelID");
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.EmployeeSalaryLevel)
-                    .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK_EmployeeSalaryLevel_Employee");
-
-                entity.HasOne(d => d.SalaryLevel)
-                    .WithMany(p => p.EmployeeSalaryLevel)
-                    .HasForeignKey(d => d.SalaryLevelId)
-                    .HasConstraintName("FK_EmployeeSalaryLevel_SalaryLevel");
-            });
+            
 
             modelBuilder.Entity<Insurrance>(entity =>
             {
@@ -617,33 +590,7 @@ namespace WebAPI.Models
                 entity.Property(e => e.Reason).HasMaxLength(255);
             });
 
-            modelBuilder.Entity<SalaryLevel>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(255);
-
-                entity.Property(e => e.Note).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-            });
-
+            
             modelBuilder.Entity<Specialize>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -658,12 +605,9 @@ namespace WebAPI.Models
 
             modelBuilder.Entity<TimeKeeping>(entity =>
             {
-                entity.HasKey(e => e.Id);
+                entity.HasKey(e => e.EmployeeId);
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.HasKey(e => e.Date);
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
@@ -677,35 +621,12 @@ namespace WebAPI.Models
                 entity.Property(e => e.UpdatedBy)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.TimeKeeping)
-                    .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK_TimeKeeping_Employee");
             });
 
-            modelBuilder.Entity<TimeWork>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.EmployeeId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("EmployeeID");
-
-                entity.Property(e => e.Month).HasColumnType("datetime");
-
-                entity.Property(e => e.TotalExtraTimeWork).HasColumnType("decimal(18, 0)");
-            });
-
+            
             modelBuilder.Entity<Ward>(entity =>
             {
                 entity.Property(e => e.Id)

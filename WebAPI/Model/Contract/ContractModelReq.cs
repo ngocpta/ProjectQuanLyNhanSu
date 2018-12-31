@@ -8,5 +8,6 @@
         public string ContractTypeId { get; set; }
         public int? Time { get; set; }
         public bool? Active { get; set; }
+        public decimal? SalaryFactor { get; set; }
     }
 }

@@ -50,6 +50,7 @@ namespace WebAPI.Controllers
                         t.Name = c.Name;
                         t.Time = c.Time;
                         t.Note = c.Note;
+                        t.SalaryFactor = c.SalaryFactor;
                     }
                     catch (Exception e) { }
                     list.Add(t);
@@ -83,6 +84,7 @@ namespace WebAPI.Controllers
                     co.Name = contract.Name;
                     co.Time = contract.Time;
                     co.Note = contract.Note;
+                    co.SalaryFactor = contract.SalaryFactor;
                     co.ContractTypeId = contract.ContractTypeId;
                     co.ContractTypeName= _context.ContractType.FirstOrDefault(x => x.Id == co.ContractTypeId) == null
                         ? string.Empty
@@ -121,6 +123,7 @@ namespace WebAPI.Controllers
                         co.Name = contract.Name;
                         co.Time = contract.Time;
                         co.Note = contract.Note;
+                        co.SalaryFactor = contract.SalaryFactor;
                         co.ContractTypeId = contract.ContractTypeId;
                         co.ContractTypeName = _context.ContractType.FirstOrDefault(x => x.Id == co.ContractTypeId) == null
                             ? string.Empty
@@ -163,6 +166,7 @@ namespace WebAPI.Controllers
                     contract.Name = req.value.Name;
                     contract.Note = req.value.Note;
                     contract.Time = req.value.Time;
+                    contract.SalaryFactor = req.value.SalaryFactor;
 
                     if (_context.ContractType.FirstOrDefault(x => x.Id == req.value.ContractTypeId) == null)
                         throw new ContractTypeNotFoundException();
@@ -213,6 +217,7 @@ namespace WebAPI.Controllers
                 contract.Note = req.value.Note;
                 contract.Time = req.value.Time;
                 contract.ContractTypeId = req.value.ContractTypeId;
+                contract.SalaryFactor = req.value.SalaryFactor;
 
                 _context.SaveChanges();
 
