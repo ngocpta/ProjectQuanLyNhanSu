@@ -590,6 +590,13 @@ namespace WebAPI.Models
                 entity.Property(e => e.Reason).HasMaxLength(255);
             });
 
+            modelBuilder.Entity<Salary>(entity =>
+            {
+                entity.HasKey(e => e.EmployeeId);
+                entity.HasKey(e => e.Month);
+                entity.HasKey(e => e.Year);
+
+            });
             
             modelBuilder.Entity<Specialize>(entity =>
             {

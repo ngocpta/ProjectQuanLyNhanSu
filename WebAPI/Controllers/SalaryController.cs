@@ -88,13 +88,13 @@ namespace WebAPI.Controllers
                     salary.DisciplineLeaveWithoutPermission =
                         Convert.ToDecimal(salary.NoLeaveWithoutPermission) * req.value.DisciplineLeaveWithoutPermission;
                     salaryMonth.DisciplineLeaveWithoutPermission = salary.DisciplineLeaveWithoutPermission;
-                    salary.SalaryReal = salary.SalaryPerDay * Convert.ToDecimal(salary.NoWork) +
-                                        salary.AllowanceHaveLunch + salary.AllowanceCall + salary.AllowanceOther +
-                                        salary.AllowanceParking + salary.RewardOther + salary.RewardKPI -
-                                        salary.DisciplineLateMoney - salary.DisciplineLeaveWithoutPermission -
-                                        salary.DisciplineKPI - salary.DisciplineOther -
-                                        salary.SalaryBasic * salary.PercentInsurance -
-                                        salary.SalaryBasic * salary.PercentPersonalTaxRate;
+                    salary.SalaryReal = Convert.ToDecimal(salary.SalaryPerDay * Convert.ToDecimal(salary.NoWork)) +
+                                        Convert.ToDecimal(salary.AllowanceHaveLunch) + Convert.ToDecimal(salary.AllowanceCall) + Convert.ToDecimal(salary.AllowanceOther) +
+                                        Convert.ToDecimal(salary.AllowanceParking) + Convert.ToDecimal(salary.RewardOther + salary.RewardKPI) -
+                                        Convert.ToDecimal(salary.DisciplineLateMoney) - Convert.ToDecimal(salary.DisciplineLeaveWithoutPermission) -
+                                        Convert.ToDecimal(salary.DisciplineKPI) - Convert.ToDecimal(salary.DisciplineOther) -
+                                        Convert.ToDecimal(salary.SalaryBasic * salary.PercentInsurance) -
+                                        Convert.ToDecimal(salary.SalaryBasic * salary.PercentPersonalTaxRate);
                     salaryMonth.SalaryReal = salary.SalaryReal;
                     salaryMonth.NoWork = salary.NoWork;
                     salaryMonth.NoGetVacation = salary.NoGetVacation;
@@ -102,7 +102,6 @@ namespace WebAPI.Controllers
                     salaryMonth.NoLeaveWithPermission = salary.NoLeaveWithPermission;
                     salaryMonth.NoLeaveWithoutPermission = salary.NoLeaveWithoutPermission;
 
-                    _context.Salary.Add(salary);
                     _context.SaveChanges();
 
                     return HandleSuccess(salaryMonth);
