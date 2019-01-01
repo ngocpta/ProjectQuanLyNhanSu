@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAPI.Models
@@ -13,7 +14,6 @@ namespace WebAPI.Models
         [Key]
         public int Year { get; set; }
         public decimal? SalaryBasic { get; set; }
-        public double? TotalTimeWork { get; set; }
         public decimal? AllowanceHaveLunch { get; set; }
         public decimal? AllowanceParking { get; set; }
         public decimal? AllowanceCall { get; set; }
@@ -31,8 +31,10 @@ namespace WebAPI.Models
         public decimal? DisciplineLateMoney { get; set; }
         public decimal? DisciplineKPI { get; set; }
         public decimal? DisciplineOther { get; set; }
+        public decimal? DisciplineLeaveWithoutPermission { get; set; }
         public decimal? RewardKPI { get; set; }
         public decimal? RewardOther { get; set; }
-
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }

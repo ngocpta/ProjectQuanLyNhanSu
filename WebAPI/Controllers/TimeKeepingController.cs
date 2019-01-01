@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.ExceptionModel.EmployeeException;
+using WebAPI.ExceptionModel.SalaryException;
 using WebAPI.ExceptionModel.TimeKeepingException;
 using WebAPI.Model;
 using WebAPI.Model.Constant;
@@ -254,6 +255,9 @@ namespace WebAPI.Controllers
                     x.Date.Year == req.value.Year);
 
                 var timeMonthRes = new TimeKeepingMonthRes();
+                if (_context.Salary.Any(x =>
+                    x.EmployeeId == req.value.EmployeeId && x.Month == req.value.Month && x.Year == req.value.Year))
+                    throw new SalaryAlreadyExistException();
                 
                 var salary = new Salary();
                 try
@@ -286,6 +290,7 @@ namespace WebAPI.Controllers
 
                     timeMonthRes.NoWork = Convert.ToDouble(months.Sum(x => x.NoWork));
                     salary.NoWork = timeMonthRes.NoWork;
+                    salary.NoWorkStandard = req.value.NoWorkStandard;
 
                     timeMonthRes.TimeKeepingDay = months.Select(t => new TimeKeepingDayRes
                     {
@@ -329,6 +334,11 @@ namespace WebAPI.Controllers
             catch (TimeKeepingNotFoundException e)
             {
                 res.Status = TimeKeepingStatus.TimeKeepingNotFound;
+                res.Value = e.Message;
+            }
+            catch (SalaryAlreadyExistException e)
+            {
+                res.Status = SalaryStatus.SalaryAlreadyExist;
                 res.Value = e.Message;
             }
             return Ok(res);
