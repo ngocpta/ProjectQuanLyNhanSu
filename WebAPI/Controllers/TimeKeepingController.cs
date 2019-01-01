@@ -139,31 +139,44 @@ namespace WebAPI.Controllers
                         .Hours;
                     if (extractTimeWork >= 4) timeKeepingDay.ExtractTimeWork = extractTimeWork;
                     extractTimeWork = 0;
-                    var timeWorksPerDay = Convert.ToDateTime(req.value.TimeOut).TimeOfDay
-                                              .Subtract(Convert.ToDateTime(req.value.TimeIn).TimeOfDay)
-                                              .Hours - 2;
+                    var timeWorksPerDay = (Convert.ToDouble(Convert.ToDateTime(req.value.TimeOut).TimeOfDay
+                        .Subtract(Convert.ToDateTime(req.value.TimeIn).TimeOfDay)
+                        .Hours));
+                    
                     timeKeepingDay.NoTimeWork = timeWorksPerDay;
                     if (Convert.ToDateTime(req.value.Date).DayOfWeek == DayOfWeek.Sunday)
                     {
-                        if (timeWorksPerDay < 4) timeKeepingDay.NoWork = 0;
+                        if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut1).TimeOfDay
+                                .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
+                                .Hours) timeKeepingDay.NoWork = 0;
                         else
                         {
-                            if (timeWorksPerDay < 8) timeKeepingDay.NoWork = 0.75;
+                            if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut2).TimeOfDay
+                                    .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
+                                    .Hours) timeKeepingDay.NoWork = 0.75;
                             else
                             {
-                                if (timeWorksPerDay < 12) timeKeepingDay.NoWork = 1.5;
+                                if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut3).TimeOfDay
+                                        .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
+                                        .Hours) timeKeepingDay.NoWork = 1.5;
                                 else timeKeepingDay.NoWork = 2.25;
                             }
                         }
                     }
-                    if (timeWorksPerDay < 4) timeKeepingDay.NoWork = 0;
+                    if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut1).TimeOfDay
+                            .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
+                            .Hours) timeKeepingDay.NoWork = 0;
                     else
                     {
-                        if (timeWorksPerDay < 8) timeKeepingDay.NoWork = 0.5;
+                        if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut2).TimeOfDay
+                                .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
+                                .Hours) timeKeepingDay.NoWork = 0.75;
                         else
                         {
-                            if (timeWorksPerDay < 12) timeKeepingDay.NoWork = 1;
-                            else timeKeepingDay.NoWork = 1.5;
+                            if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut3).TimeOfDay
+                                    .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
+                                    .Hours) timeKeepingDay.NoWork = 1.5;
+                            else timeKeepingDay.NoWork = 2.25;
                         }
                     }
 

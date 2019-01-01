@@ -38,7 +38,11 @@ namespace WebAPI.Controllers
                 var salaryMonth=new SalaryRes();
                 try
                 {
+                    salaryMonth.EmployeeId = req.value.EmployeeId;
+                    salaryMonth.UpdatedBy = req.value.UpdatedBy;
+                    salaryMonth.UpdatedDate = DateTime.Today.ToShortDateString();
                     salaryMonth.AllowanceCall = req.value.AllowanceCall;
+                    salaryMonth.NoWorkStandard = salary.NoWorkStandard;
 
                     salary.AllowanceHaveLunch = req.value.AllowanceHaveLunchPerDay * Convert.ToDecimal(salary.NoWork);
                     salaryMonth.AllowanceHaveLunch = salary.AllowanceHaveLunch;

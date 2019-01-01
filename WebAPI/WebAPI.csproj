@@ -4,7 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="ExceptionModel\InsuranceException\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Model\Common\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
