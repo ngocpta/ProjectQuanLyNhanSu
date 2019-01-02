@@ -108,7 +108,7 @@ namespace WebAPI.Controllers
                     if (checkId)
                         throw new AllowanceAlreadyExistException();
 
-                    allowance.Id = "ALLOWANCE" + Convert.ToString(DateTime.Today.Day) +
+                    allowance.Id = "PC" + Convert.ToString(DateTime.Today.Day) +
                                     Convert.ToString(DateTime.Today.Month) + Convert.ToString(DateTime.Today.Year) +
                                     req.value.Id;
                     allowance.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);

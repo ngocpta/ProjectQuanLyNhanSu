@@ -45,47 +45,54 @@ namespace WebAPI.Controllers
                     timeKeepingDay.Date = Convert.ToDateTime(req.value.Date).Date;
                     timeKeepingDay.TimeIn = Convert.ToDateTime(req.value.TimeIn).TimeOfDay;
                     timeKeepingDay.TimeOut = Convert.ToDateTime(req.value.TimeOut).TimeOfDay;
-                    timeKeepingDay.IsGetVacation = req.value.IsGetVacation;
-                    timeKeepingDay.IsLeaveWithPermission = req.value.IsLeaveWithPermission;
-                    timeKeepingDay.IsLeaveWithoutPermission = req.value.IsLeaveWithoutPermission;
+                    
                     var timeInOutStandard = _context.ConfigureTimeWork.FirstOrDefault(x => x.Id == 1);
                     var late = Convert.ToDateTime(req.value.TimeIn).TimeOfDay.Subtract(timeInOutStandard.TimeIn1)
                         .Minutes;
                     if (late > 0) timeKeepingDay.IsLate = true;
-                    timeKeepingDay.IsLate = false;
+                    else timeKeepingDay.IsLate = false;
+                    var date = DateTime.Today.ToShortDateString();
                     var extractTimeWork= Convert.ToDateTime(req.value.TimeOut).TimeOfDay.Subtract(timeInOutStandard.TimeOut2)
                         .Hours;
                     if (extractTimeWork >= 4) timeKeepingDay.ExtractTimeWork = extractTimeWork;
-                    extractTimeWork = 0;
-                    var timeWorksPerDay = Convert.ToDateTime(req.value.TimeOut).TimeOfDay
-                                              .Subtract(Convert.ToDateTime(req.value.TimeIn).TimeOfDay)
-                                              .Hours - 2;
+                    else extractTimeWork = 0;
+                    var timeWorksPerDay = (Convert.ToDouble(Convert.ToDateTime(req.value.TimeOut).TimeOfDay
+                        .Subtract(Convert.ToDateTime(req.value.TimeIn).TimeOfDay)
+                        .Hours));
+
                     timeKeepingDay.NoTimeWork = timeWorksPerDay;
-                    if (Convert.ToDateTime(req.value.Date).DayOfWeek==DayOfWeek.Sunday)
+                    if (Convert.ToDateTime(req.value.Date).DayOfWeek == DayOfWeek.Sunday)
                     {
-                        if (timeWorksPerDay < 4) timeKeepingDay.NoWork = 0;
+                        if (timeWorksPerDay < (timeInOutStandard.TimeOut1).Subtract(timeInOutStandard.TimeIn1).Hours)
+                            timeKeepingDay.NoWork = 0;
                         else
                         {
-                            if (timeWorksPerDay < 8) timeKeepingDay.NoWork = 0.75;
+                            if (timeWorksPerDay < (timeInOutStandard.TimeOut2).Subtract(timeInOutStandard.TimeIn1).Hours)
+                             timeKeepingDay.NoWork = 0.75;
                             else
                             {
-                                if (timeWorksPerDay < 12) timeKeepingDay.NoWork = 1.5;
+                                if (timeWorksPerDay < (timeInOutStandard.TimeOut3)
+                                        .Subtract(timeInOutStandard.TimeIn1).Hours)
+                                    timeKeepingDay.NoWork = 1.5;
                                 else timeKeepingDay.NoWork = 2.25;
                             }
                         }
                     }
-                    if (timeWorksPerDay < 4) timeKeepingDay.NoWork = 0;
+                    if (timeWorksPerDay < (timeInOutStandard.TimeOut1).Subtract(timeInOutStandard.TimeIn1).Hours)
+                        timeKeepingDay.NoWork = 0;
                     else
                     {
-                        if (timeWorksPerDay < 8) timeKeepingDay.NoWork = 0.5;
+                        if (timeWorksPerDay < (timeInOutStandard.TimeOut2).Subtract(timeInOutStandard.TimeIn1).Hours)
+                            timeKeepingDay.NoWork = 0.75;
                         else
                         {
-                            if (timeWorksPerDay < 12) timeKeepingDay.NoWork = 1;
-                            else timeKeepingDay.NoWork = 1.5;
+                            if (timeWorksPerDay < (timeInOutStandard.TimeOut3)
+                                .Subtract(timeInOutStandard.TimeIn1).Hours)
+                                timeKeepingDay.NoWork = 1.5;
+                            else timeKeepingDay.NoWork = 2.25;
                         }
                     }
 
-                    timeKeepingDay.UpdatedBy = req.value.UpDatedBy;
                     timeKeepingDay.UpdatedDate = DateTime.Today;
 
                     _context.TimeKeeping.Add(timeKeepingDay);
@@ -127,18 +134,15 @@ namespace WebAPI.Controllers
                 {
                     timeKeepingDay.TimeIn = Convert.ToDateTime(req.value.TimeIn).TimeOfDay;
                     timeKeepingDay.TimeOut = Convert.ToDateTime(req.value.TimeOut).TimeOfDay;
-                    timeKeepingDay.IsGetVacation = req.value.IsGetVacation;
-                    timeKeepingDay.IsLeaveWithPermission = req.value.IsLeaveWithPermission;
-                    timeKeepingDay.IsLeaveWithoutPermission = req.value.IsLeaveWithoutPermission;
                     var timeInOutStandard = _context.ConfigureTimeWork.FirstOrDefault(x => x.Id == 1);
                     var late = Convert.ToDateTime(req.value.TimeIn).TimeOfDay.Subtract(timeInOutStandard.TimeIn1)
                         .Minutes;
                     if (late > 0) timeKeepingDay.IsLate = true;
-                    timeKeepingDay.IsLate = false;
+                    else timeKeepingDay.IsLate = false;
                     var extractTimeWork = Convert.ToDateTime(req.value.TimeOut).TimeOfDay.Subtract(timeInOutStandard.TimeOut2)
                         .Hours;
                     if (extractTimeWork >= 4) timeKeepingDay.ExtractTimeWork = extractTimeWork;
-                    extractTimeWork = 0;
+                    else extractTimeWork = 0;
                     var timeWorksPerDay = (Convert.ToDouble(Convert.ToDateTime(req.value.TimeOut).TimeOfDay
                         .Subtract(Convert.ToDateTime(req.value.TimeIn).TimeOfDay)
                         .Hours));
@@ -146,41 +150,36 @@ namespace WebAPI.Controllers
                     timeKeepingDay.NoTimeWork = timeWorksPerDay;
                     if (Convert.ToDateTime(req.value.Date).DayOfWeek == DayOfWeek.Sunday)
                     {
-                        if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut1).TimeOfDay
-                                .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
-                                .Hours) timeKeepingDay.NoWork = 0;
+                        if (timeWorksPerDay < (timeInOutStandard.TimeOut1).Subtract(timeInOutStandard.TimeIn1).Hours)
+                            timeKeepingDay.NoWork = 0;
                         else
                         {
-                            if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut2).TimeOfDay
-                                    .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
-                                    .Hours) timeKeepingDay.NoWork = 0.75;
+                            if (timeWorksPerDay < (timeInOutStandard.TimeOut2).Subtract(timeInOutStandard.TimeIn1).Hours)
+                                timeKeepingDay.NoWork = 0.75;
                             else
                             {
-                                if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut3).TimeOfDay
-                                        .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
-                                        .Hours) timeKeepingDay.NoWork = 1.5;
+                                if (timeWorksPerDay < (timeInOutStandard.TimeOut3)
+                                    .Subtract(timeInOutStandard.TimeIn1).Hours)
+                                    timeKeepingDay.NoWork = 1.5;
                                 else timeKeepingDay.NoWork = 2.25;
                             }
                         }
                     }
-                    if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut1).TimeOfDay
-                            .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
-                            .Hours) timeKeepingDay.NoWork = 0;
+                    if (timeWorksPerDay < (timeInOutStandard.TimeOut1).Subtract(timeInOutStandard.TimeIn1).Hours)
+                        timeKeepingDay.NoWork = 0;
                     else
                     {
-                        if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut2).TimeOfDay
-                                .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
-                                .Hours) timeKeepingDay.NoWork = 0.75;
+                        if (timeWorksPerDay < (timeInOutStandard.TimeOut2).Subtract(timeInOutStandard.TimeIn1).Hours)
+                            timeKeepingDay.NoWork = 0.75;
                         else
                         {
-                            if (timeWorksPerDay < Convert.ToDateTime(timeInOutStandard.TimeOut3).TimeOfDay
-                                    .Subtract(Convert.ToDateTime(timeInOutStandard.TimeIn1).TimeOfDay)
-                                    .Hours) timeKeepingDay.NoWork = 1.5;
+                            if (timeWorksPerDay < (timeInOutStandard.TimeOut3)
+                                .Subtract(timeInOutStandard.TimeIn1).Hours)
+                                timeKeepingDay.NoWork = 1.5;
                             else timeKeepingDay.NoWork = 2.25;
                         }
                     }
 
-                    timeKeepingDay.UpdatedBy = req.value.UpDatedBy;
                     timeKeepingDay.UpdatedDate = DateTime.Today;
 
                     _context.SaveChanges();
@@ -222,9 +221,6 @@ namespace WebAPI.Controllers
                     timeKeepingDay.Date = time.Date.ToString();
                     timeKeepingDay.TimeIn = time.TimeIn.ToString();
                     timeKeepingDay.TimeOut = time.TimeOut.ToString();
-                    timeKeepingDay.IsGetVacation = time.IsGetVacation;
-                    timeKeepingDay.IsLeaveWithPermission = time.IsLeaveWithPermission;
-                    timeKeepingDay.IsLeaveWithoutPermission = time.IsLeaveWithoutPermission;
                     timeKeepingDay.IsLate = time.IsLate;
                     timeKeepingDay.ExtractTimeWork = time.ExtractTimeWork;
                     timeKeepingDay.NoTimeWork = time.NoTimeWork;
@@ -268,9 +264,9 @@ namespace WebAPI.Controllers
                     x.Date.Year == req.value.Year);
 
                 var timeMonthRes = new TimeKeepingMonthRes();
-                if (_context.Salary.Any(x =>
-                    x.EmployeeId == req.value.EmployeeId && x.Month == req.value.Month && x.Year == req.value.Year))
-                    throw new SalaryAlreadyExistException();
+                //if (_context.Salary.Any(x =>
+                //    x.EmployeeId == req.value.EmployeeId && x.Month == req.value.Month && x.Year == req.value.Year))
+                //    throw new SalaryAlreadyExistException();
                 
                 var salary = new Salary();
                 try
@@ -286,21 +282,6 @@ namespace WebAPI.Controllers
                     timeMonthRes.NoLate =Convert.ToDouble(months.Where(x => x.IsLate == true).Count());
                     salary.NoLate = timeMonthRes.NoLate;
 
-                    timeMonthRes.NoGetVacation = Convert.ToDouble(months.Where(x =>
-                        x.IsGetVacation == true && x.IsLeaveWithoutPermission == false &&
-                        x.IsLeaveWithPermission == false && x.IsLate == false).Count());
-                    salary.NoGetVacation = timeMonthRes.NoGetVacation;
-
-                    timeMonthRes.NoLeaveWithPermission = Convert.ToDouble(months.Where(x =>
-                        x.IsLeaveWithPermission == true && x.IsLeaveWithoutPermission == false &&
-                        x.IsGetVacation == false && x.IsLate == false).Count());
-                    salary.NoLeaveWithPermission = timeMonthRes.NoLeaveWithPermission;
-
-                    timeMonthRes.NoLeaveWithoutPermission = Convert.ToDouble(months.Where(x =>
-                        x.IsLeaveWithPermission == false && x.IsLeaveWithoutPermission == true && x.IsLate == false &&
-                        x.IsGetVacation == false).Count());
-                    salary.NoLeaveWithoutPermission = timeMonthRes.NoLeaveWithoutPermission;
-
                     timeMonthRes.NoWork = Convert.ToDouble(months.Sum(x => x.NoWork));
                     salary.NoWork = timeMonthRes.NoWork;
                     salary.NoWorkStandard = req.value.NoWorkStandard;
@@ -313,9 +294,6 @@ namespace WebAPI.Controllers
                                 ? string.Empty
                                 : _context.Employee.FirstOrDefault(x => x.Id == t.EmployeeId).Fullname,
                         NoWork = t.NoWork,
-                        IsLeaveWithoutPermission = t.IsLeaveWithoutPermission,
-                        IsLeaveWithPermission = t.IsLeaveWithPermission,
-                        IsGetVacation = t.IsGetVacation,
                         IsLate = t.IsLate,
                         Date = t.Date.ToShortDateString(),
                         ExtractTimeWork = t.ExtractTimeWork,
@@ -326,8 +304,7 @@ namespace WebAPI.Controllers
                         UpdatedBy = t.UpdatedBy,
                         UpdatedDate = t.UpdatedDate.ToString()
                     }).ToList();
-
-                    _context.Salary.Add(salary);
+                    
                     _context.SaveChanges();
 
                     return HandleSuccess(timeMonthRes);

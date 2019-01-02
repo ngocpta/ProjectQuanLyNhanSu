@@ -223,29 +223,29 @@ namespace WebAPI.Controllers
                         : _context.District.FirstOrDefault(x => x.Id == districtId).ProvinceId;
                     employee.ProvinceName = _context.Province.FirstOrDefault(x => x.Id == provinceId).Name;
 
-                    employee.EmployeeRalatives = _context.Relatives.Where(r => r.EmployeeId == em.Id).Select(re => new
-                        EmployeeRalativesRes
-                    {
-                        Id = re.Id,
-                        WardId = re.WardId,
-                        Birthday = re.Birthday.ToString(),
-                        EmployeeId = re.EmployeeId,
-                        Fullname = re.Fullname,
-                        Career = re.Career,
-                        PhoneNumber = re.PhoneNumber,
-                        Relationship = re.Relationship
-                    }).ToList();
-                    employee.EmployeeWorkProcesses = _context.WorkProcess.Where(r => r.EmployeeId == em.Id).Select(wo => new
-                         EmployeeWorkProcessRes()
-                    {
-                        Id = wo.Id,
-                        EmployeeId = wo.EmployeeId,
-                        PhoneNumber = wo.PhoneNumber,
-                        Address = wo.Address,
-                        CompanyWorkedName = wo.CompanyWorkedName,
-                        StartWork = wo.StartWork.ToString(),
-                        EndWork = wo.EndWork.ToString()
-                    }).ToList();
+                    //employee.EmployeeRalatives = _context.Relatives.Where(r => r.EmployeeId == em.Id).Select(re => new
+                    //    EmployeeRalativesRes
+                    //{
+                    //    Id = re.Id,
+                    //    WardId = re.WardId,
+                    //    Birthday = re.Birthday.ToString(),
+                    //    EmployeeId = re.EmployeeId,
+                    //    Fullname = re.Fullname,
+                    //    Career = re.Career,
+                    //    PhoneNumber = re.PhoneNumber,
+                    //    Relationship = re.Relationship
+                    //}).ToList();
+                    //employee.EmployeeWorkProcesses = _context.WorkProcess.Where(r => r.EmployeeId == em.Id).Select(wo => new
+                    //     EmployeeWorkProcessRes()
+                    //{
+                    //    Id = wo.Id,
+                    //    EmployeeId = wo.EmployeeId,
+                    //    PhoneNumber = wo.PhoneNumber,
+                    //    Address = wo.Address,
+                    //    CompanyWorkedName = wo.CompanyWorkedName,
+                    //    StartWork = wo.StartWork.ToString(),
+                    //    EndWork = wo.EndWork.ToString()
+                    //}).ToList();
                 }
                 catch (Exception e) { }
 

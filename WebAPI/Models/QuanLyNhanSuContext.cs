@@ -1,32 +1,29 @@
 ﻿using System;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace WebAPI.Models
 {
     public partial class QuanLyNhanSuContext : DbContext
     {
-        private readonly IConfiguration _configuration;
         public QuanLyNhanSuContext()
         {
         }
 
-        public QuanLyNhanSuContext(DbContextOptions<QuanLyNhanSuContext> options, IConfiguration configuration)
+        public QuanLyNhanSuContext(DbContextOptions<QuanLyNhanSuContext> options)
             : base(options)
         {
-            _configuration = configuration;
         }
 
         public virtual DbSet<Allowance> Allowance { get; set; }
         public virtual DbSet<ConfigureTimeWork> ConfigureTimeWork { get; set; }
-        public virtual DbSet<Contracts> Contracts { get; set; }
         public virtual DbSet<ContractType> ContractType { get; set; }
+        public virtual DbSet<Contracts> Contracts { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Discipline> Discipline { get; set; }
         public virtual DbSet<District> District { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
+        public virtual DbSet<EmployeeAllowance> EmployeeAllowance { get; set; }
         public virtual DbSet<EmployeeContract> EmployeeContract { get; set; }
         public virtual DbSet<EmployeeDiscipline> EmployeeDiscipline { get; set; }
         public virtual DbSet<EmployeeInsurrance> EmployeeInsurrance { get; set; }
@@ -36,154 +33,89 @@ namespace WebAPI.Models
         public virtual DbSet<PersonalTaxRate> PersonalTaxRate { get; set; }
         public virtual DbSet<Position> Position { get; set; }
         public virtual DbSet<Province> Province { get; set; }
-        public virtual DbSet<Relatives> Relatives { get; set; }
         public virtual DbSet<Reward> Reward { get; set; }
         public virtual DbSet<RewardAndDisciplineMethod> RewardAndDisciplineMethod { get; set; }
         public virtual DbSet<Salary> Salary { get; set; }
         public virtual DbSet<Specialize> Specialize { get; set; }
         public virtual DbSet<TimeKeeping> TimeKeeping { get; set; }
         public virtual DbSet<Ward> Ward { get; set; }
-        public virtual DbSet<WorkProcess> WorkProcess { get; set; }
-
-        // Unable to generate entity type for table 'dbo.Salary'. Please see the warning messages.
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\ANHNGOC;Database=QuanLyNhanSu;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=35.198.246.115,1433;User Id=ngocpta1691; Password=ngoc69nlan; Encrypt=True;TrustServerCertificate=True;Connection Timeout=30; Database=Ngocpta_6969;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
+
             modelBuilder.Entity<Allowance>(entity =>
             {
-                entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(250);
-
-                entity.Property(e => e.Note).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
             });
 
             modelBuilder.Entity<ConfigureTimeWork>(entity =>
             {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<Contracts>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-                
-                entity.Property(e => e.ContractTypeId).HasColumnName("ContractTypeID");
-
-                entity.Property(e => e.Name).HasMaxLength(255);
-
-                entity.Property(e => e.Note).HasMaxLength(255);
-
-                entity.HasOne(d => d.ContractType)
-                    .WithMany(p => p.Contract)
-                    .HasForeignKey(d => d.ContractTypeId)
-                    .HasConstraintName("FK_Contract_ContractType");
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<ContractType>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
-                
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.Name).HasMaxLength(255);
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
+            });
 
-                entity.Property(e => e.Note).HasMaxLength(255);
+            modelBuilder.Entity<Contracts>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
 
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.ContractTypeId).IsUnicode(false);
 
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.HasOne(d => d.ContractType)
+                    .WithMany(p => p.Contracts)
+                    .HasForeignKey(d => d.ContractTypeId)
+                    .HasConstraintName("FK_Contract_ContractType");
             });
 
             modelBuilder.Entity<Department>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
 
-
-                entity.Property(e => e.Name).HasMaxLength(255);
+                entity.Property(e => e.PhoneNumber).IsUnicode(false);
             });
 
             modelBuilder.Entity<Discipline>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.DicisionNo).IsUnicode(false);
 
-                entity.Property(e => e.Desciption).HasMaxLength(255);
+                entity.Property(e => e.RewardAndDisciplineMethodId).IsUnicode(false);
 
-                entity.Property(e => e.DicisionNo)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
-
-                entity.Property(e => e.RewardAndDisciplineMethodId).HasColumnName("RewardAndDisciplineMethodID");
-
-                entity.Property(e => e.SignBy).HasMaxLength(250);
-
-                entity.Property(e => e.SignDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Title).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
 
                 entity.HasOne(d => d.RewardAndDisciplineMethod)
                     .WithMany(p => p.Discipline)
@@ -193,17 +125,7 @@ namespace WebAPI.Models
 
             modelBuilder.Entity<District>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Code)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.ProvinceId).HasColumnName("ProvinceID");
+                entity.Property(e => e.Code).IsUnicode(false);
 
                 entity.HasOne(d => d.Province)
                     .WithMany(p => p.District)
@@ -213,34 +135,19 @@ namespace WebAPI.Models
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
-                
-                entity.Property(e => e.Birthday).HasColumnType("datetime");
 
-                entity.Property(e => e.CurrentAddress).HasMaxLength(50);
+                entity.Property(e => e.DepartmentId).IsUnicode(false);
 
-                entity.Property(e => e.DayInCompany).HasColumnType("datetime");
+                entity.Property(e => e.Email).IsUnicode(false);
 
-                entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
+                entity.Property(e => e.Phone).IsUnicode(false);
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-                
+                entity.Property(e => e.PositionId).IsUnicode(false);
 
-                entity.Property(e => e.Fullname).HasMaxLength(100);
-
-                entity.Property(e => e.PayrollDay).HasColumnType("datetime");
-
-                entity.Property(e => e.PositionId).HasColumnName("PositionID");
-
-                entity.Property(e => e.SpecializeId).HasColumnName("SpecializeID");
-
-                entity.Property(e => e.WardId).HasColumnName("WardID");
+                entity.Property(e => e.SpecializeId).IsUnicode(false);
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Employee)
@@ -263,52 +170,55 @@ namespace WebAPI.Models
                     .HasConstraintName("FK_Employee_Employee");
             });
 
-            modelBuilder.Entity<EmployeeContract>(entity =>
+            modelBuilder.Entity<EmployeeAllowance>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.ContractId).HasColumnName("ContractID");
+                entity.Property(e => e.AllowanceId).IsUnicode(false);
 
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
 
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
+                entity.HasOne(d => d.Allowance)
+                    .WithMany(p => p.EmployeeAllowance)
+                    .HasForeignKey(d => d.AllowanceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EmployeeAllowance_Allowance");
 
-                entity.Property(e => e.Note).HasMaxLength(255);
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.EmployeeAllowance)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EmployeeAllowance_Employee");
+            });
 
-                entity.Property(e => e.SigningDate).HasColumnType("datetime");
+            modelBuilder.Entity<EmployeeContract>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
 
-                entity.Property(e => e.StartDate).HasColumnType("datetime");
+                entity.Property(e => e.ContractId).IsUnicode(false);
 
-                entity.HasOne(d => d.Contract)
-                    .WithMany(p => p.EmployeeContract)
-                    .HasForeignKey(d => d.ContractId)
-                    .HasConstraintName("FK_EmployeeContract_Contract");
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeContract)
                     .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EmployeeContract_Employee");
             });
 
             modelBuilder.Entity<EmployeeDiscipline>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Date).HasColumnType("datetime");
+                entity.Property(e => e.DisciplineId).IsUnicode(false);
 
-                entity.Property(e => e.DisciplineId).HasColumnName("DisciplineID");
-
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.Note).HasMaxLength(255);
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
 
                 entity.HasOne(d => d.Discipline)
                     .WithMany(p => p.EmployeeDiscipline)
@@ -325,31 +235,17 @@ namespace WebAPI.Models
 
             modelBuilder.Entity<EmployeeInsurrance>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
 
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+                entity.Property(e => e.InsurranceId).IsUnicode(false);
 
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.InsurranceId).HasColumnName("InsurranceID");
-
-                entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeInsurrance)
@@ -364,18 +260,13 @@ namespace WebAPI.Models
 
             modelBuilder.Entity<EmployeeReward>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Date).HasColumnType("datetime");
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
 
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.Note).HasMaxLength(255);
-                entity.Property(e => e.RewardId).HasColumnName("RewardID");
+                entity.Property(e => e.RewardId).IsUnicode(false);
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeReward)
@@ -389,184 +280,72 @@ namespace WebAPI.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EmployeeReward_Reward");
             });
-            
 
             modelBuilder.Entity<Insurrance>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
-
-
-                entity.Property(e => e.Description).HasMaxLength(255);
-
-                entity.Property(e => e.Name).HasMaxLength(250);
             });
 
             modelBuilder.Entity<Member>(entity =>
             {
-                entity.HasKey(e => e.Username);
+                entity.HasKey(e => e.Username)
+                    .HasName("PK_Tbl_Login");
 
                 entity.Property(e => e.Username)
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+                entity.Property(e => e.Email).IsUnicode(false);
 
                 entity.Property(e => e.FailLogin).HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.Fullname).HasMaxLength(500);
+                entity.Property(e => e.Password).IsUnicode(false);
 
-                entity.Property(e => e.LastChangePass).HasColumnType("datetime");
+                entity.Property(e => e.Phone).IsUnicode(false);
 
-                entity.Property(e => e.LastLogin).HasColumnType("datetime");
-
-                entity.Property(e => e.Password)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Phone)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
             });
 
             modelBuilder.Entity<PersonalTaxRate>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
-                
 
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(255);
-
-                entity.Property(e => e.Note).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
             });
 
             modelBuilder.Entity<Position>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
-                
-
-                entity.Property(e => e.Name).HasMaxLength(255);
-
-                entity.Property(e => e.Note).HasMaxLength(255);
             });
 
             modelBuilder.Entity<Province>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Code)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<Relatives>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Birthday).HasColumnType("datetime");
-
-                entity.Property(e => e.Career).HasMaxLength(255);
-
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.Fullname).HasMaxLength(255);
-
-                entity.Property(e => e.WardId).HasColumnName("WardID");
-
-                entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.Relatives)
-                    .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK_Relatives_Employee");
+                entity.Property(e => e.Code).IsUnicode(false);
             });
 
             modelBuilder.Entity<Reward>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.CreatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedBy).IsUnicode(false);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.DicisionNo).IsUnicode(false);
 
-                entity.Property(e => e.Desciption).HasMaxLength(255);
+                entity.Property(e => e.RewardAndDisciplineMethodId).IsUnicode(false);
 
-                entity.Property(e => e.DicisionNo)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.EffectiveDate).HasColumnType("datetime");
-
-                entity.Property(e => e.RewardAndDisciplineMethodId).HasColumnName("RewardAndDisciplineMethodID");
-
-                entity.Property(e => e.SignBy).HasMaxLength(250);
-
-                entity.Property(e => e.SignDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Title).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
 
                 entity.HasOne(d => d.RewardAndDisciplineMethod)
                     .WithMany(p => p.Reward)
@@ -576,110 +355,46 @@ namespace WebAPI.Models
 
             modelBuilder.Entity<RewardAndDisciplineMethod>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
-                
-
-                entity.Property(e => e.Name).HasMaxLength(255);
-
-                entity.Property(e => e.Reason).HasMaxLength(255);
             });
 
             modelBuilder.Entity<Salary>(entity =>
             {
-                entity.HasKey(e => e.EmployeeId);
-                entity.HasKey(e => e.Month);
-                entity.HasKey(e => e.Year);
+                entity.HasKey(e => new { e.EmployeeId, e.Month, e.Year })
+                    .HasName("PK_Salary_1");
 
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
             });
-            
+
             modelBuilder.Entity<Specialize>(entity =>
             {
-                entity.HasKey(e => e.Id);
-
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
-
-                entity.Property(e => e.Name).HasMaxLength(255);
             });
-            
 
             modelBuilder.Entity<TimeKeeping>(entity =>
             {
-                entity.HasKey(e => e.EmployeeId);
+                entity.HasKey(e => new { e.EmployeeId, e.Date })
+                    .HasName("PK_TimeKeeping_1");
 
-                entity.HasKey(e => e.Date);
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
 
-                entity.Property(e => e.Date).HasColumnType("datetime");
-
-                entity.Property(e => e.EmployeeId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("EmployeeID");
-
-                entity.Property(e => e.Note).HasMaxLength(255);
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-                
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedBy).IsUnicode(false);
             });
 
-            
             modelBuilder.Entity<Ward>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Code)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DistrictId).HasColumnName("DistrictID");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.Code).IsUnicode(false);
 
                 entity.HasOne(d => d.District)
                     .WithMany(p => p.Ward)
                     .HasForeignKey(d => d.DistrictId)
                     .HasConstraintName("FK_Ward_District");
-            });
-
-            modelBuilder.Entity<WorkProcess>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Address).HasMaxLength(250);
-
-                entity.Property(e => e.CompanyWorkedName).HasMaxLength(255);
-
-                entity.Property(e => e.EmployeeId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("EmployeeID");
-
-                entity.Property(e => e.EndWork).HasColumnType("datetime");
-
-                entity.Property(e => e.StartWork).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.WorkProcess)
-                    .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK_WorkProcess_Employee");
             });
         }
     }

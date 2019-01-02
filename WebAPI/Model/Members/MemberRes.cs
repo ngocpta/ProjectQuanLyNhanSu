@@ -14,7 +14,7 @@ namespace WebAPI.Model.Members
         public string LastLogin { get; set; }
         public string LastChangePass { get; set; }
         public int? Type { get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }
         public string UpdatedBy { get; set; }

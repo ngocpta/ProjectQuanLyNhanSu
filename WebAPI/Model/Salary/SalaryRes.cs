@@ -10,10 +10,7 @@
         public decimal? AllowanceParking { get; set; }
         public decimal? AllowanceCall { get; set; }
         public decimal? AllowanceOther { get; set; }
-        public double? NoLeaveWithPermission { get; set; }
-        public double? NoLeaveWithoutPermission { get; set; }
         public double? NoLate { get; set; }
-        public double? NoGetVacation { get; set; }
         public double? NoWorkStandard { get; set; }
         public double? NoWork { get; set; }
         public decimal? SalaryPerDay { get; set; }
@@ -25,8 +22,5 @@
         public decimal? DisciplineOther { get; set; }
         public decimal? RewardKPI { get; set; }
         public decimal? RewardOther { get; set; }
-        public decimal? DisciplineLeaveWithoutPermission { get; set; }
-        public string UpdatedBy { get; set; }
-        public string UpdatedDate { get; set; }
     }
 }
