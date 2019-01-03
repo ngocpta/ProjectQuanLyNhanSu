@@ -181,13 +181,13 @@ namespace WebAPI.Controllers
                     discipline.Amount = req.value.Amount;
                     discipline.Desciption = req.value.Desciption;
                     discipline.DicisionNo = req.value.DicisionNo;
-                    discipline.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
+                    discipline.EffectiveDate = DateTime.Today;
                     discipline.PercentDiscipline = req.value.PercentDiscipline;
                     if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
                         throw new MethodNotFoundException();
                     discipline.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
                     discipline.SignBy = req.value.SignBy;
-                    discipline.SignDate = Convert.ToDateTime(req.value.SignDate);
+                    discipline.SignDate = DateTime.Today;
                     discipline.CreatedDate = DateTime.Today;
 
                     _context.Discipline.Add(discipline);

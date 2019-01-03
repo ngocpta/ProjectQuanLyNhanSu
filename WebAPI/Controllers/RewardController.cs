@@ -182,13 +182,14 @@ namespace WebAPI.Controllers
                     reward.Amount = req.value.Amount;
                     reward.Desciption = req.value.Desciption;
                     reward.DicisionNo = req.value.DicisionNo;
-                    reward.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
+                    
+                    reward.EffectiveDate = DateTime.Today;
                     reward.PercentReward = req.value.PercentReward;
                     if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
                         throw new MethodNotFoundException();
                     reward.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
                     reward.SignBy = req.value.SignBy;
-                    reward.SignDate = Convert.ToDateTime(req.value.SignDate);
+                    reward.SignDate = DateTime.Today;
                     reward.CreatedDate = DateTime.Today;
 
                     _context.Reward.Add(reward);
@@ -226,18 +227,18 @@ namespace WebAPI.Controllers
                 throw new RewardNotFoundException();
             try
             {
+                reward.Amount = req.value.Amount;
                 reward.Desciption = req.value.Desciption;
                 reward.DicisionNo = req.value.DicisionNo;
-                reward.EffectiveDate = Convert.ToDateTime(req.value.EffectiveDate);
+
+                reward.EffectiveDate = DateTime.Today;
                 reward.PercentReward = req.value.PercentReward;
                 if (_context.RewardAndDisciplineMethod.FirstOrDefault(x => x.Id == req.value.RewardAndDisciplineMethodId) == null)
                     throw new MethodNotFoundException();
                 reward.RewardAndDisciplineMethodId = req.value.RewardAndDisciplineMethodId;
-                reward.Amount = req.value.Amount;
-                reward.Title = req.value.Title;
                 reward.SignBy = req.value.SignBy;
-                reward.SignDate = Convert.ToDateTime(req.value.SignDate);
-                reward.UpdatedDate = Convert.ToDateTime(DateTime.Today);
+                reward.SignDate = DateTime.Today;
+                reward.CreatedDate = DateTime.Today;
 
                 _context.SaveChanges();
 

@@ -59,6 +59,10 @@ namespace WebAPI.Controllers
                         salary.NoLate = s.NoLate;
                         salary.NoWorkStandard = s.NoWorkStandard;
                         salary.EmployeeId = s.EmployeeId;
+                        salary.EmployeeName =
+                            _context.Employee.FirstOrDefault(x => x.Id == s.EmployeeId).Fullname == null
+                                ? string.Empty
+                                : _context.Employee.FirstOrDefault(x => x.Id == s.EmployeeId).Fullname;
                         salary.PercentPersonalTaxRate = s.PercentPersonalTaxRate;
 
                         list.Add(salary);
@@ -98,7 +102,7 @@ namespace WebAPI.Controllers
                     salaryMonth.EmployeeId = req.value.EmployeeId;
 
                     var allowanceCall = _context.EmployeeAllowance.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201904");
+                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201904".Trim());
 
                     if (allowanceCall == null)
                     {
@@ -115,7 +119,7 @@ namespace WebAPI.Controllers
                     salaryMonth.NoWorkStandard = salary.NoWorkStandard;
 
                     var allowanceHaveLunch = _context.EmployeeAllowance.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201901");
+                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201901".Trim());
 
                     if (allowanceHaveLunch == null)
                     {
@@ -134,7 +138,7 @@ namespace WebAPI.Controllers
                     salaryMonth.AllowanceHaveLunch = salary.AllowanceHaveLunch;
 
                     var allowanceParking = _context.EmployeeAllowance.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201902");
+                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201902".Trim());
 
                     if (allowanceParking == null)
                     {
@@ -152,7 +156,7 @@ namespace WebAPI.Controllers
                     salaryMonth.AllowanceParking = salary.AllowanceParking;
 
                     var allowanceOther = _context.EmployeeAllowance.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201903");
+                        x.EmployeeId == req.value.EmployeeId && x.AllowanceId == "PC21201903".Trim());
 
                     if (allowanceOther == null)
                     {
@@ -184,7 +188,7 @@ namespace WebAPI.Controllers
 
 
                     var disciplineKPITest = _context.EmployeeDiscipline.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.DisciplineId == "KL111201801");
+                        x.EmployeeId == req.value.EmployeeId && x.DisciplineId == "KL111201801".Trim());
 
                     if (disciplineKPITest == null )
                     {
@@ -206,7 +210,7 @@ namespace WebAPI.Controllers
                     salaryMonth.DisciplineKPI = salary.DisciplineKpi;
 
                     var disciplineLateTest = _context.EmployeeDiscipline.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.DisciplineId == "KL111201802");
+                        x.EmployeeId == req.value.EmployeeId && x.DisciplineId == "KL111201802".Trim());
 
                     if (disciplineLateTest == null)
                     {
@@ -227,7 +231,7 @@ namespace WebAPI.Controllers
                     salaryMonth.DisciplineLateMoney = salary.DisciplineLateMoney;
 
                     var disciplineOtherTest = _context.EmployeeDiscipline.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.DisciplineId == "KL111201803");
+                        x.EmployeeId == req.value.EmployeeId && x.DisciplineId == "KL111201803".Trim());
 
                     if (disciplineOtherTest == null)
                     {
@@ -250,7 +254,7 @@ namespace WebAPI.Controllers
 
 
                     var percentInsuranceTest = _context.EmployeeInsurrance.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.InsurranceId == "BH21201901");
+                        x.EmployeeId == req.value.EmployeeId && x.InsurranceId == "BH21201901".Trim());
 
                     if (percentInsuranceTest == null)
                     {
@@ -273,7 +277,7 @@ namespace WebAPI.Controllers
 
 
                     var rewardKPITest = _context.EmployeeReward.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.RewardId == "KT111201801");
+                        x.EmployeeId == req.value.EmployeeId && x.RewardId == "KT111201801".Trim());
 
                     if (rewardKPITest == null)
                     {
@@ -294,7 +298,7 @@ namespace WebAPI.Controllers
                     salaryMonth.RewardKPI = salary.RewardKpi;
 
                     var rewardOtherTest = _context.EmployeeReward.FirstOrDefault(x =>
-                        x.EmployeeId == req.value.EmployeeId && x.RewardId == "KT111201802");
+                        x.EmployeeId == req.value.EmployeeId && x.RewardId == "KT111201802".Trim());
 
                     if (rewardOtherTest == null)
                     {
@@ -325,7 +329,7 @@ namespace WebAPI.Controllers
                                          Convert.ToDecimal(salary.RewardOther);
                     var desciplineMoney = salary.DisciplineLateMoney + salary.DisciplineKpi * salary.SalaryBasic +
                                      salary.DisciplineOther;
-                    var taxTNCN = _context.PersonalTaxRate.FirstOrDefault(x => x.Id == "TAX01");
+                    var taxTNCN = _context.PersonalTaxRate.FirstOrDefault(x => x.Id == "TAX01".Trim());
                     if (taxTNCN == null) salary.PercentPersonalTaxRate = 0;
                     salary.PercentPersonalTaxRate = Convert.ToDecimal(taxTNCN.Scale);
                     var sumSalary = salaryByNoWork - desciplineMoney;

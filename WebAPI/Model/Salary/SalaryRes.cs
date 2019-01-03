@@ -3,6 +3,7 @@
     public class SalaryRes
     {
         public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
         public decimal? SalaryBasic { get; set; }
